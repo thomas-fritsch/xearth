@@ -22,12 +22,6 @@ import de.tfritsch.common.ColorXmlAdapter;
 @XmlRootElement
 public class Settings extends Model {
 
-    public void refresh() {
-        firePropertyChange(null, null, null);
-    }
-
-    // -----------------------------------------------------------------
-
     public static final String PROPERTY_IMAGE_PROJECTION = "imageProjection";
 
     private ImageProjection imageProjection = ImageProjection.ORTHOGRAPHIC;

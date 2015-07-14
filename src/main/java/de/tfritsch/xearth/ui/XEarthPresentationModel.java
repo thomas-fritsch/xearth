@@ -176,8 +176,7 @@ public class XEarthPresentationModel extends PresentationModel<XEarth> {
 
         @Override
         public void actionPerformed(final ActionEvent e) {
-            Settings settings = getBean().getSettings();
-            settings.refresh();
+            getBean().refresh();
         }
     }
 

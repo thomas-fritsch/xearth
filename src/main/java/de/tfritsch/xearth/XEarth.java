@@ -12,7 +12,7 @@ import com.jgoodies.binding.beans.Model;
 import de.tfritsch.xearth.image.ImageCreator;
 
 @SuppressWarnings("serial")
-public class XEarth extends Model implements Runnable, PropertyChangeListener {
+public class XEarth extends Model implements Runnable {
 
     private File settingsFile = new File(System.getProperty("user.home"),
             "xearth-settings.xml");
@@ -30,12 +30,16 @@ public class XEarth extends Model implements Runnable, PropertyChangeListener {
                 JAXB.marshal(settings, settingsFile);
             }
         });
-        settings.addPropertyChangeListener(this);
+        settings.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(final PropertyChangeEvent e) {
+                refresh();
+            }
+        });
         imageCreator = new ImageCreator(settings);
     }
 
-    @Override
-    public synchronized void propertyChange(final PropertyChangeEvent e) {
+    public final synchronized void refresh() {
         notifyAll();
     }
 
