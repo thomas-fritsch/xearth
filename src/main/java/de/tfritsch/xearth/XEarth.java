@@ -1,17 +1,18 @@
 package de.tfritsch.xearth;
 
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.xml.bind.JAXB;
 
 import com.jgoodies.binding.beans.Model;
-import com.jgoodies.binding.beans.PropertyConnector;
 
 import de.tfritsch.xearth.image.ImageCreator;
 
 @SuppressWarnings("serial")
-public class XEarth extends Model {
+public class XEarth extends Model implements Runnable, PropertyChangeListener {
 
     private File settingsFile = new File(System.getProperty("user.home"),
             "xearth-settings.xml");
@@ -29,13 +30,26 @@ public class XEarth extends Model {
                 JAXB.marshal(settings, settingsFile);
             }
         });
+        settings.addPropertyChangeListener(this);
+        imageCreator = new ImageCreator(settings);
     }
 
-    public void start() {
-        imageCreator = new ImageCreator(settings);
-        PropertyConnector.connect(imageCreator, ImageCreator.PROPERTY_IMAGE,
-                this, PROPERTY_IMAGE);
-        new Thread(imageCreator, "XEarth-ImageCreator").start();
+    @Override
+    public synchronized void propertyChange(final PropertyChangeEvent e) {
+        notifyAll();
+    }
+
+    @Override
+    public final synchronized void run() {
+        while (true) {
+            setImage(imageCreator.createImage());
+            System.out.println("waiting");
+            try {
+                wait((long) (settings.getDisplayUpdateInterval() * 60 * 1000));
+            } catch (InterruptedException e) {
+                // do nothing
+            }
+        }
     }
 
     /**

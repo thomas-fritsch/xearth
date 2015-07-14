@@ -9,8 +9,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -26,14 +24,12 @@ import de.tfritsch.xearth.Quake;
 import de.tfritsch.xearth.Settings;
 
 @SuppressWarnings("serial")
-public class ImageCreator extends Bean implements PropertyChangeListener,
-        Runnable {
+public class ImageCreator extends Bean {
 
     private final Settings settings;
 
     private FlatMap flatMap;
 
-    private BufferedImage image;
     private int imageWidth;
     private int imageHeight;
     private double imageRadius;
@@ -49,14 +45,6 @@ public class ImageCreator extends Bean implements PropertyChangeListener,
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        init();
-        settings.addPropertyChangeListener(this);
-    }
-
-    @Override
-    public synchronized void propertyChange(final PropertyChangeEvent e) {
-        init();
-        notifyAll();
     }
 
     private void init() {
@@ -78,32 +66,8 @@ public class ImageCreator extends Bean implements PropertyChangeListener,
                 new Date()).normalize();
     }
 
-    @Override
-    public synchronized void run() {
-        while (true) {
-            image = createImage();
-            firePropertyChange(PROPERTY_IMAGE, null, image);
-            System.out.println("waiting");
-            try {
-                wait((long) (settings.getDisplayUpdateInterval() * 60 * 1000));
-            } catch (InterruptedException e) {
-                // do nothing
-            }
-            init();
-        }
-    }
-
-    /**
-     * The name of the read-only property <code>image</code>.
-     * @see #getImage()
-     */
-    public static final String PROPERTY_IMAGE = "image";
-
-    public final BufferedImage getImage() {
-        return image;
-    }
-
-    protected BufferedImage createImage() {
+    public synchronized BufferedImage createImage() {
+        init();
         BufferedImage image = new BufferedImage(imageWidth, imageHeight,
                 BufferedImage.TYPE_INT_RGB);
         drawEarth(image);
