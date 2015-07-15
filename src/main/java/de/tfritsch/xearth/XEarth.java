@@ -4,6 +4,9 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.bind.JAXB;
 
@@ -12,12 +15,18 @@ import com.jgoodies.binding.beans.Model;
 import de.tfritsch.xearth.image.ImageCreator;
 
 @SuppressWarnings("serial")
-public class XEarth extends Model implements Runnable {
+public class XEarth extends Model {
+
+    private static final int MSEC_PER_MINUTE = 60 * 1000;
 
     private File settingsFile = new File(System.getProperty("user.home"),
             "xearth-settings.xml");
 
     private ImageCreator imageCreator;
+
+    private TimerTask imageTimerTask;
+
+    private Timer timer;
 
     public XEarth() {
         if (settingsFile.exists())
@@ -37,23 +46,18 @@ public class XEarth extends Model implements Runnable {
             }
         });
         imageCreator = new ImageCreator(settings);
+        imageTimerTask = new ImageTimerTask();
+        timer = new Timer("XEarth");
+        timer.schedule(imageTimerTask, new Date(),
+                (long) (settings.getDisplayUpdateInterval() * MSEC_PER_MINUTE));
     }
 
     public final synchronized void refresh() {
-        notifyAll();
-    }
-
-    @Override
-    public final synchronized void run() {
-        while (true) {
-            setImage(imageCreator.createImage());
-            System.out.println("waiting");
-            try {
-                wait((long) (settings.getDisplayUpdateInterval() * 60 * 1000));
-            } catch (InterruptedException e) {
-                // do nothing
-            }
-        }
+        imageTimerTask.cancel();
+        timer.purge();
+        imageTimerTask = new ImageTimerTask();
+        timer.schedule(imageTimerTask, new Date(),
+                (long) (settings.getDisplayUpdateInterval() * MSEC_PER_MINUTE));
     }
 
     /**
@@ -87,4 +91,10 @@ public class XEarth extends Model implements Runnable {
         firePropertyChange(PROPERTY_IMAGE, oldValue, newValue);
     }
 
+    private class ImageTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            setImage(imageCreator.createImage());
+        }
+    }
 }

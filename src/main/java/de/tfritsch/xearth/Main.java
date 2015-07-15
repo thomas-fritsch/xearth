@@ -41,7 +41,6 @@ public final class Main {
             JFrame frame = new FrameBuilder(presentationModel).buildFrame();
             frame.setVisible(true);
         }
-        new Thread(xearth, "XEarth").start();
     }
 
     /**
