@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,6 +17,8 @@ import de.tfritsch.xearth.image.ImageCreator;
 public class XEarth extends Model {
 
     private static final int MSEC_PER_MINUTE = 60 * 1000;
+
+    private static final int DELAY = 500;
 
     private File settingsFile = new File(System.getProperty("user.home"),
             "xearth-settings.xml");
@@ -48,15 +49,17 @@ public class XEarth extends Model {
         imageCreator = new ImageCreator(settings);
         imageTimerTask = new ImageTimerTask();
         timer = new Timer("XEarth");
-        timer.schedule(imageTimerTask, new Date(),
+        timer.schedule(imageTimerTask, 0,
                 (long) (settings.getDisplayUpdateInterval() * MSEC_PER_MINUTE));
     }
 
+    // if this method is called again within less than DELAY msec,
+    // then ImageTimerTask.run will be called only once.
     public final synchronized void refresh() {
         imageTimerTask.cancel();
         timer.purge();
         imageTimerTask = new ImageTimerTask();
-        timer.schedule(imageTimerTask, new Date(),
+        timer.schedule(imageTimerTask, DELAY,
                 (long) (settings.getDisplayUpdateInterval() * MSEC_PER_MINUTE));
     }
 
