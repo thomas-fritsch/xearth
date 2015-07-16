@@ -1,6 +1,7 @@
 package de.tfritsch.xearth;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -440,6 +441,11 @@ public class Settings extends Model {
         List<Quake> oldValue = quakes;
         quakes = newValue;
         firePropertyChange(PROPERTY_QUAKES, oldValue, newValue);
+    }
+
+    public void updateQuakes() throws IOException {
+        setQuakes(Utilities.readQuakes(getQuakesFeedURL()));
+        setQuakesLastUpdated(new Date());
     }
 
     // -----------------------------------------------------------------

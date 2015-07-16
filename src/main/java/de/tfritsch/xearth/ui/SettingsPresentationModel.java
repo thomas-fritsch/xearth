@@ -258,12 +258,7 @@ public class SettingsPresentationModel extends PresentationModel<Settings> {
         @Override
         public void actionPerformed(final ActionEvent e) {
             try {
-                String url = (String) getModel(
-                        Settings.PROPERTY_QUAKES_FEED_URL).getValue();
-                getModel(Settings.PROPERTY_QUAKES).setValue(
-                        Utilities.readQuakes(url));
-                getModel(Settings.PROPERTY_QUAKES_LAST_UPDATED).setValue(
-                        new Date());
+                getBean().updateQuakes();
             } catch (IOException ex) {
                 Component component = (Component) e.getSource();
                 JOptionPane.showMessageDialog(component, ex.getMessage(),

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,6 +19,8 @@ public class XEarth extends Model {
 
     private static final int MSEC_PER_MINUTE = 60 * 1000;
 
+    private static final int MSEC_PER_HOUR = 60 * 60 * 1000;
+
     private static final int DELAY = 500;
 
     private File settingsFile = new File(System.getProperty("user.home"),
@@ -26,6 +29,8 @@ public class XEarth extends Model {
     private ImageCreator imageCreator;
 
     private TimerTask imageTimerTask;
+
+    private TimerTask quakesTimerTask;
 
     private Timer timer;
 
@@ -48,9 +53,13 @@ public class XEarth extends Model {
         });
         imageCreator = new ImageCreator(settings);
         imageTimerTask = new ImageTimerTask();
+        quakesTimerTask = new QuakesTimerTask();
         timer = new Timer("XEarth");
         timer.schedule(imageTimerTask, 0,
                 (long) (settings.getDisplayUpdateInterval() * MSEC_PER_MINUTE));
+        timer.schedule(quakesTimerTask,
+                (long) (settings.getQuakesUpdateInterval() * MSEC_PER_HOUR),
+                (long) (settings.getQuakesUpdateInterval() * MSEC_PER_HOUR));
     }
 
     // if this method is called again within less than DELAY msec,
@@ -97,6 +106,17 @@ public class XEarth extends Model {
         @Override
         public void run() {
             setImage(imageCreator.createImage());
+        }
+    }
+
+    private class QuakesTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            try {
+                settings.updateQuakes();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
