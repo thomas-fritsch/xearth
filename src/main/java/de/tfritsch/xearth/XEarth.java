@@ -57,7 +57,6 @@ public class XEarth extends Model {
     // then ImageTimerTask.run will be called only once.
     public final synchronized void refresh() {
         imageTimerTask.cancel();
-        timer.purge();
         imageTimerTask = new ImageTimerTask();
         timer.schedule(imageTimerTask, DELAY,
                 (long) (settings.getDisplayUpdateInterval() * MSEC_PER_MINUTE));
