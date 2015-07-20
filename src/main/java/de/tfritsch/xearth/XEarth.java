@@ -45,12 +45,6 @@ public class XEarth extends Model {
                 JAXB.marshal(settings, settingsFile);
             }
         });
-        settings.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(final PropertyChangeEvent e) {
-                refresh();
-            }
-        });
         imageCreator = new ImageCreator(settings);
         imageTimerTask = new ImageTimerTask();
         quakesTimerTask = new QuakesTimerTask();
@@ -60,6 +54,16 @@ public class XEarth extends Model {
         timer.schedule(quakesTimerTask,
                 (long) (settings.getQuakesUpdateInterval() * MSEC_PER_HOUR),
                 (long) (settings.getQuakesUpdateInterval() * MSEC_PER_HOUR));
+        settings.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(final PropertyChangeEvent e) {
+                if (Settings.PROPERTY_QUAKES_UPDATE_INTERVAL.equals(e
+                        .getPropertyName()))
+                    updateQuakesTimer();
+                else
+                    refresh();
+            }
+        });
     }
 
     // if this method is called again within less than DELAY msec,
@@ -69,6 +73,14 @@ public class XEarth extends Model {
         imageTimerTask = new ImageTimerTask();
         timer.schedule(imageTimerTask, DELAY,
                 (long) (settings.getDisplayUpdateInterval() * MSEC_PER_MINUTE));
+    }
+
+    private synchronized void updateQuakesTimer() {
+        quakesTimerTask.cancel();
+        quakesTimerTask = new QuakesTimerTask();
+        timer.schedule(quakesTimerTask,
+                (long) (settings.getQuakesUpdateInterval() * MSEC_PER_HOUR),
+                (long) (settings.getQuakesUpdateInterval() * MSEC_PER_HOUR));
     }
 
     /**
