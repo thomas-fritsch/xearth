@@ -129,6 +129,7 @@ public class XEarthPresentationModel extends PresentationModel<XEarth> {
             JFileChooser chooser = new JFileChooser();
             chooser.setFileFilter(new FileNameExtensionFilter("PNG files",
                     "png"));
+            chooser.setSelectedFile(lastSavedFile);
             if (chooser.showSaveDialog(getWindowSource(e)) == JFileChooser.APPROVE_OPTION) {
                 BufferedImage image = getBean().getImage();
                 try {
