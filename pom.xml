@@ -53,6 +53,12 @@
 			<organizationUrl>http://www.oce.com</organizationUrl>
 		</developer>
 	</developers>
+	<scm>
+		<url>https://github.com/thomas-fritsch/xearth</url>
+	</scm>
+	<issueManagement>
+		<url>https://github.com/thomas-fritsch/xearth/issues</url>
+	</issueManagement>
 	<build>
 		<resources>
 			<resource>
