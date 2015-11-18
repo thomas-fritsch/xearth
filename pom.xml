@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.tfritsch.xearth</groupId>
 	<artifactId>xearth</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>XEarth for Java</name>
 	<description>XEarth renders a shaded image of the earth, as seen from your favorite vantage point in space. By default, the image is updated every five minutes according to the current position of the sun.</description>
 	<inceptionYear>2015</inceptionYear>
