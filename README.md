@@ -1,0 +1,10 @@
+# XEarth for Java
+
+XEarth renders a shaded image of the earth, as seen from your favorite
+vantage point in space. By default, the image is updated every five minutes
+according to the current position of the sun.
+
+### Build
+
+	mvn clean install
+      
