@@ -1,6 +1,6 @@
 # XEarth for Java
 
-[![Build Status](https://travis-ci.org/thomas-fritsch/xearth.png)](http://travis-ci.org/thomas-fritsch/xearth)
+[![Build Status](https://travis-ci.org/thomas-fritsch/xearth.svg?branch=master)](https://travis-ci.org/thomas-fritsch/xearth)
 
 ### What is XEarth?
 XEarth renders a shaded image of the earth, as seen from your favorite
