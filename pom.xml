@@ -55,14 +55,16 @@
 	</developers>
 	<scm>
 		<url>https://github.com/thomas-fritsch/xearth</url>
+		<connection>scm:git:https://github.com/thomas-fritsch/xearth</connection>
+		<developerConnection>scm:git:https://github.com/thomas-fritsch/xearth</developerConnection>
 	</scm>
 	<issueManagement>
+		<system>GitHub</system>
 		<url>https://github.com/thomas-fritsch/xearth/issues</url>
-		<system>github</system>
 	</issueManagement>
 	<ciManagement>
+		<system>Travis CI</system>
 		<url>https://travis-ci.org/thomas-fritsch/xearth</url>
-		<system>travis</system>
 	</ciManagement>
 	<build>
 		<resources>
