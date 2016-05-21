@@ -8,7 +8,7 @@ Introductory information is available on [the project's GitHub Pages](http://tho
 
 ### Build
 
-	mvn clean install
+	mvn clean verify
    
   then check the `target` directory to find the generated jar file.
 
