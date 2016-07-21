@@ -349,6 +349,7 @@ public class SettingsPanelBuilder {
                         presentationModel.getModel(Settings.PROPERTY_QUAKES)),
                 presentationModel.createQuakeTableAdapter());
         table.setDefaultRenderer(Date.class, new DateTableCellRenderer());
+        table.setDefaultRenderer(String.class, new ToolTipTableCellRenderer());
         table.setPreferredScrollableViewportSize(new Dimension(300, 100));
         enableWhenSelected(showQuakesCheckBox, updateIntervalTextField,
                 colorButton);

@@ -2,10 +2,8 @@ package de.tfritsch.xearth.ui;
 
 import java.text.DateFormat;
 
-import javax.swing.table.DefaultTableCellRenderer;
-
 @SuppressWarnings("serial")
-public class DateTableCellRenderer extends DefaultTableCellRenderer {
+public class DateTableCellRenderer extends ToolTipTableCellRenderer {
 
     private DateFormat dateFormat = DateFormat.getDateTimeInstance(
             DateFormat.MEDIUM, DateFormat.SHORT);
