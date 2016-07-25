@@ -29,18 +29,7 @@ public final class SkyObjects {
      *      "http://www.amazon.de/Astronomische-Algorithmen-Jean-Meeus/dp/3335004000">
      *      Jean Meeus: Astronomische Algorithmen</a>
      */
-    public static final SkyObject SUN = new Sun();
-
-    /**
-     * The moon. Calculation of positions has a precision of 0.01 degrees within the
-     * time range from 1900 to 2100.
-     * @see <a href=
-     *      "http://www.amazon.de/Astronomische-Algorithmen-Jean-Meeus/dp/3335004000">
-     *      Jean Meeus: Astronomische Algorithmen (Kapitel 45)</a>
-     */
-    public static final SkyObject MOON = new Moon();
-
-    private static class Sun extends SkyObject {
+    public static final SkyObject SUN = new SkyObject() {
         @Override
         public Point3D getEclipticalPosition(final Date date) {
             double jd = JulianDate.fromDate(date);
@@ -56,10 +45,17 @@ public final class SkyObjects {
                     - 0.00014 * cos(2 * m);
             return Point3D.fromSpherical(lambda, beta, r);
         }
-    }
+    };
 
-    private static class Moon extends SkyObject {
-        private static final Term[] L_TERMS = {
+    /**
+     * The moon. Calculation of positions has a precision of 0.01 degrees within the
+     * time range from 1900 to 2100.
+     * @see <a href=
+     *      "http://www.amazon.de/Astronomische-Algorithmen-Jean-Meeus/dp/3335004000">
+     *      Jean Meeus: Astronomische Algorithmen (Kapitel 45)</a>
+     */
+    public static final SkyObject MOON = new SkyObject() {
+        private final Term[] lTerms = {
             // amplitude, nD, nM, nM_, nF
             new Term(6.2888, 0, 0, 1, 0),
             new Term(1.2740, 2, 0, -1, 0),
@@ -121,7 +117,7 @@ public final class SkyObjects {
             new Term(0.0003, 1, 1, -1, 0),
             new Term(0.0003, 2, 0, 3, 0),
         };
-        private static final Term[] R_TERMS = {
+        private final Term[] rTerms = {
             // amplitude, nD, nM, nM_, nF
             new Term(-20905.4, 0, 0, 1, 0),
             new Term(-3699.1, 2, 0, -1, 0),
@@ -170,7 +166,7 @@ public final class SkyObjects {
             new Term(1.2, 0, 2, 1, 0),
             new Term(8.8, 2, 0, -1, -2),
         };
-        private static final Term[] B_TERMS = {
+        private final Term[] bTerms = {
             // amplitude, nD, nM, nM_, nF
             new Term(5.1281, 0, 0, 0, 1),
             new Term(0.2806, 0, 0, 1, 1),
@@ -223,18 +219,18 @@ public final class SkyObjects {
             double a2 = 53.09 + 479264.290 * t;
             double a3 = 313.45 + 481266.484 * t;
             double lambda = lMoon; // longitude
-            for (Term term : L_TERMS) {
+            for (Term term : lTerms) {
                 lambda += term.evalSin(d, m, mMoon, f);
             }
             lambda += 0.0040 * sin(a1);
             lambda += 0.0020 * sin(lMoon - f);
             lambda += 0.0003 * sin(a2);
             double r = 385000.6; // distance
-            for (Term term : R_TERMS) {
+            for (Term term : rTerms) {
                 r += term.evalCos(d, m, mMoon, f);
             }
             double beta = 0; // latidude
-            for (Term term : B_TERMS) {
+            for (Term term : bTerms) {
                 beta += term.evalSin(d, m, mMoon, f);
             }
             beta += -0.0022 * sin(lMoon);
@@ -246,7 +242,7 @@ public final class SkyObjects {
 
             return Point3D.fromSpherical(lambda, beta, r);
         }
-    }
+    };
 
     private static class Term {
         private final double amplitude;
