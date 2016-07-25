@@ -81,6 +81,7 @@ public class ImageCreator extends Bean {
         if (settings.isQuakesVisible())
             drawQuakes(g);
         g.dispose();
+        gammaOp.filter(image, image);
         return image;
     }
 
@@ -165,7 +166,6 @@ public class ImageCreator extends Bean {
                 }
             }
         }
-        gammaOp.filter(image, image);
     }
 
     /**
