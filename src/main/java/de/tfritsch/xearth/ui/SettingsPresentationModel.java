@@ -277,7 +277,7 @@ public class SettingsPresentationModel extends PresentationModel<Settings> {
         private Class<?>[] columnClasses = {String.class, Float.class,
                 Float.class};
 
-        public MarkerTableAdapter(final ListModel listModel) {
+        public MarkerTableAdapter(final ListModel<Marker> listModel) {
             super(listModel, "Name", "Latitude", "Longitude");
         }
 
@@ -339,7 +339,7 @@ public class SettingsPresentationModel extends PresentationModel<Settings> {
         private Class<?>[] columnClasses = {Date.class, Float.class,
                 Float.class, Float.class, String.class};
 
-        public QuakeTableAdapter(final ListModel listModel) {
+        public QuakeTableAdapter(final ListModel<Quake> listModel) {
             super(listModel, "Time (" + TimeZone.getDefault().getID() + ")",
                     "Latitude", "Longitude", "Magnitude", "Location");
         }

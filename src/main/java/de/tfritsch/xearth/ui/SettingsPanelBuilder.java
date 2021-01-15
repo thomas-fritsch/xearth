@@ -340,7 +340,7 @@ public class SettingsPanelBuilder {
         lastUpdatedTextField.setEditable(false);
         JButton updateButton = new JButton(
                 presentationModel.getUpdateQuakesAction());
-        JComboBox feedComboBox = createComboBox(presentationModel
+        JComboBox<String> feedComboBox = createComboBox(presentationModel
                 .getQuakesFeedComboBoxAdapter());
         JButton colorButton = createColorButton(presentationModel
                 .getBufferedModel(Settings.PROPERTY_QUAKE_COLOR));
@@ -568,9 +568,9 @@ public class SettingsPanelBuilder {
      *            converts item data to ComboBoxModel
      * @return the bound combo box
      */
-    protected static <E> JComboBox createComboBox(
+    protected static <E> JComboBox<E> createComboBox(
             final ComboBoxAdapter<E> comboBoxAdapter) {
-        JComboBox comboBox = new JComboBox();
+        JComboBox<E> comboBox = new JComboBox<E>();
         Bindings.bind(comboBox, comboBoxAdapter);
         comboBox.setRenderer(new ShorteningListCellRenderer());
         return comboBox;
