@@ -45,7 +45,7 @@ public class SettingsPresentationModel extends PresentationModel<Settings> {
 
     public SettingsPresentationModel(final Settings settings) {
         super(settings);
-        String baseURL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
+        String baseURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
         quakesFeedComboBoxAdapter = new ComboBoxAdapter<String>(Arrays.asList(
                 baseURL + "significant_hour.csv", baseURL + "4.5_hour.csv",
                 baseURL + "significant_day.csv", baseURL + "4.5_day.csv",
